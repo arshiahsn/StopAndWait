@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ead0aa2-e669-4930-a2c2-7b08cf446ed7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mediump.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cpsc441-a4/StopWaitFtp$ResendTimer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cpsc441-a4/StopWaitFtp$ResendTimer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/cpsc441-a4/StopWaitFtp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cpsc441-a4/StopWaitFtp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/StopWaitFtp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StopWaitFtp.java" afterDir="false" />
     </list>
@@ -51,7 +51,7 @@
     <configuration name="StopWaitDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="StopWaitDriver" />
       <module name="cpsc441-a4" />
-      <option name="PROGRAM_PARAMETERS" value="-i large1.jpg -p 2025" />
+      <option name="PROGRAM_PARAMETERS" value="-i mediump.pdf -p 2025" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

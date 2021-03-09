@@ -98,9 +98,9 @@ public class StopWaitFtp {
 	 */
 	public void send(String serverName, int serverPort, String fileName) throws FtpException {
 		try{
+			setServerUdpPort(serverPort);
 			DatagramSocket udpSocket = new DatagramSocket();
 			handshake(serverName, serverPort, fileName, udpSocket.getLocalPort());
-
 			// create the payload
 			byte[] payload = new byte[MAX_PAYLOAD_SIZE];
 			byte[] buffer = new byte[MAX_PAYLOAD_SIZE];
@@ -120,6 +120,7 @@ public class StopWaitFtp {
 				// create a DatagramPacket that can be used to send segment
 				DatagramPacket pkt = FtpSegment.makePacket(seg, InetAddress.getByName(serverName), getServerUdpPort());
 				DatagramPacket ack = FtpSegment.makePacket(ackSeg, InetAddress.getByName(serverName), getServerUdpPort());
+
 				ResendTimer resendTimer = new ResendTimer(pkt,udpSocket,seqNo);
 				timer.scheduleAtFixedRate(resendTimer,0,getTimeout());
 				udpSocket.receive(ack);
@@ -152,8 +153,7 @@ public class StopWaitFtp {
 			DataOutputStream tcpOutput = new DataOutputStream(tcpSocket.getOutputStream());
 			DataInputStream tcpInput = new DataInputStream(tcpSocket.getInputStream());
 			//Send the UTF encoded file name
-			byte[] bytes = fileName.getBytes(StandardCharsets.UTF_8);
-			tcpOutput.writeBytes(new String(bytes, StandardCharsets.UTF_8));
+			tcpOutput.writeUTF(fileName);
 			//Send the file length
 			File file = new File(fileName);
 			setFileLen(file.length());

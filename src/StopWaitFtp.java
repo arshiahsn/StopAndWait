@@ -111,7 +111,7 @@ public class StopWaitFtp {
 			int readBytes = 0;
 			int seqNo = getInitSeqNo();
 			long totalReadBytes = 0;
-
+			Timer timer = new Timer();
 			//read from file(inName) then send to server until entire file is sent
 			while ((readBytes = inFile.read(payload)) != -1) {
 				totalReadBytes += readBytes;
@@ -120,22 +120,18 @@ public class StopWaitFtp {
 				// create a DatagramPacket that can be used to send segment
 				DatagramPacket pkt = FtpSegment.makePacket(seg, InetAddress.getByName(serverName), getServerUdpPort());
 				DatagramPacket ack = FtpSegment.makePacket(ackSeg, InetAddress.getByName(serverName), getServerUdpPort());
-
 				ResendTimer resendTimer = new ResendTimer(pkt,udpSocket,seqNo);
 				udpSocket.send(pkt);
 				System.out.println("send\t"+seqNo);
-				Timer timer = new Timer();
 				timer.scheduleAtFixedRate(resendTimer,getTimeout(),getTimeout());
 				udpSocket.receive(ack);
 				System.out.println("ack \t" + Integer.toString(seqNo+1));
-				timer.cancel();
 				resendTimer.cancel();
-				if(totalReadBytes == getFileLen())
-					timer.purge();
 				seqNo += 1;
 
-
 			}
+			timer.cancel();
+			timer.purge();
 
 		}
 		catch(Exception e){

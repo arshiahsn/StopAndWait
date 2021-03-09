@@ -126,6 +126,7 @@ public class StopWaitFtp {
 				udpSocket.receive(ack);
 				System.out.println("ack " + seqNo+1);
 				resendTimer.cancel();
+				seqNo += 1;
 
 
 			}

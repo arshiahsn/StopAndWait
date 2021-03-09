@@ -101,7 +101,6 @@ public class StopWaitFtp {
 	 */
 	public void send(String serverName, int serverPort, String fileName) throws FtpException {
 		try{
-			int bufferSize = 10000;
 			DatagramSocket udpSocket = new DatagramSocket();
 			handshake(serverName, serverPort, fileName, udpSocket.getLocalPort());
 
@@ -115,12 +114,10 @@ public class StopWaitFtp {
 			FileInputStream inFile = new FileInputStream(fileName);
 			int readBytes = 0;
 			int seqNo = getInitSeqNo();
-			long totalReadBytes = 0;
 			Timer timer = new Timer();
 
 			//read from file(inName) then send to server until entire file is sent
 			while ((readBytes = inFile.read(payload)) != -1) {
-				totalReadBytes += readBytes;
 				FtpSegment seg = new FtpSegment(seqNo, payload);
 				FtpSegment ackSeg = new FtpSegment(seqNo+1, buffer);
 				// create a DatagramPacket that can be used to send segment

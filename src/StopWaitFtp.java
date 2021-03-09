@@ -13,30 +13,28 @@ import java.util.logging.*;
 public class StopWaitFtp {
 
 	public class ResendTimer extends TimerTask {
-		private int timer;
 		private DatagramPacket pkt;
 		private DatagramSocket udpSocket;
+		private int seq;
 
 
 
-
-		public ResendTimer(int timer_, DatagramPacket pkt_, DatagramSocket udpSocket_){
-			timer = timer_;
+		public ResendTimer(DatagramPacket pkt_, DatagramSocket udpSocket_, int seq_){
 			pkt = pkt_;
 			udpSocket = udpSocket_;
+			seq = seq_;
+			System.out.println("send " + seq);
 		}
 
 		@Override
 		public void run() {
-
-			while(true){
+				System.out.println("timeout");
 				try {
 					udpSocket.send(pkt);
-					Thread.sleep(timer);
+					System.out.println("retx " + seq);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
 
 		}
 
@@ -87,7 +85,6 @@ public class StopWaitFtp {
 	public StopWaitFtp(int timeout) {
 		this.timeout = timeout;
 
-
 	}
 
 
@@ -123,10 +120,12 @@ public class StopWaitFtp {
 				// create a DatagramPacket that can be used to send segment
 				DatagramPacket pkt = FtpSegment.makePacket(seg, InetAddress.getByName(serverName), getServerUdpPort());
 				DatagramPacket ack = FtpSegment.makePacket(ackSeg, InetAddress.getByName(serverName), getServerUdpPort());
-				ResendTimer resendTimer = new ResendTimer(getTimeout(),pkt,udpSocket);
+				ResendTimer resendTimer = new ResendTimer(pkt,udpSocket,seqNo);
 				timer.scheduleAtFixedRate(resendTimer,0,getTimeout());
 				udpSocket.receive(ack);
+				System.out.println("ack " + seqNo+1);
 				resendTimer.cancel();
+
 
 			}
 			timer.cancel();

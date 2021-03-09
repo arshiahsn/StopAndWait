@@ -23,15 +23,14 @@ public class StopWaitFtp {
 			pkt = pkt_;
 			udpSocket = udpSocket_;
 			seq = seq_;
-			System.out.println("send " + seq);
 		}
 
 		@Override
 		public void run() {
-				System.out.println("timeout");
+				System.out.println("timeout\t");
 				try {
 					udpSocket.send(pkt);
-					System.out.println("retx " + seq);
+					System.out.println("retx\t" + seq);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -122,9 +121,11 @@ public class StopWaitFtp {
 				DatagramPacket ack = FtpSegment.makePacket(ackSeg, InetAddress.getByName(serverName), getServerUdpPort());
 
 				ResendTimer resendTimer = new ResendTimer(pkt,udpSocket,seqNo);
-				timer.scheduleAtFixedRate(resendTimer,0,getTimeout());
+				udpSocket.send(pkt);
+				System.out.println("send\t"+seqNo);
+				timer.scheduleAtFixedRate(resendTimer,getTimeout(),getTimeout());
 				udpSocket.receive(ack);
-				System.out.println("ack " + seqNo+1);
+				System.out.println("ack \t" + Integer.toString(seqNo+1));
 				resendTimer.cancel();
 				seqNo += 1;
 

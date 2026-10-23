@@ -114,7 +114,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@400_bad_req](https://twitter.com/400_bad_req) - arshiahsn@gmail.com
+Your Name - arshiahsn@gmail.com
 
 Project Link: [https://github.com/arshiahsn/simple_api](https://github.com/arshiahsn/simple_api)
 
